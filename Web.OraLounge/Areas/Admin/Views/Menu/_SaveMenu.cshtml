@@ -1,0 +1,47 @@
+﻿@model Web.OraLounge.Areas.Admin.Models.PostMenuViewModel
+@{
+    var categories = TempData["ProductCategories"] as IEnumerable<SelectListItem>;
+    TempData.Keep();
+}
+@using (Html.BeginForm("SaveMenu", "Menu", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "save-menu-form", @enctype = "multipart/form-data" }))
+{
+    <div class="modal-body" style="text-align:center">
+        <div class="row">
+            <div class="col-sm-12 ml-auto">
+                <div class="contacts_form__body">
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        @Html.TextBoxFor(model => model.Files, "", new { @type = "file", @multiple = "multiple" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.CategoryId, categories, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name" })
+                        <span class="help-block">
+                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Description" })
+                        <span class="help-block">
+                            @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Price, new { @class = "form-control", placeholder = "Price" })
+                        <span class="help-block">
+                            @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-danger" })
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- / .row -->
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+}

@@ -1,0 +1,41 @@
+﻿@using Web.OraLounge.Areas.Admin.Models;
+@model IEnumerable<BookingScheduleViewModel>
+@{
+    var tables = TempData["Tables"] as IEnumerable<TableViewModel>;
+    var hours = TempData["Hours"] as IEnumerable<DateTime>;
+    TempData.Keep();
+}
+<div class="table-responsive">
+    <table class="table table-bordered" id="bookingSchedule" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>@hours.FirstOrDefault().ToShortDateString()</th>
+                @foreach (var item in hours)
+                {
+                    <th>@item.ToString("HH:mm")</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var table in tables)
+            {
+                <tr data-item-id="@table.Id">
+                    <th>Table @table.Number</th>
+                    @foreach (var item in hours)
+                    {
+                        var booking = Model.Where(x => x.BookingTime.Hour == item.Hour && x.BookingTime.Minute == item.Minute && x.ReservedTables.Contains(table.Id)).FirstOrDefault();
+                        if (booking != null)
+                        {
+                            <td>@booking.Name - @booking.PeopleCount People</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

@@ -1,0 +1,33 @@
+﻿@model Web.OraLounge.Areas.Admin.Models.TableViewModel
+@using (Html.BeginForm("SaveTable", "Table", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "login-form" }))
+{
+    <div class="modal-body" style="text-align:center">
+        <div class="row">
+            <div class="col-sm-12 ml-auto">
+                <div class="contacts_form__body">
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.EnumDropDownListFor(m => m.TablePlace, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Number, new { @class = "form-control", placeholder = "Table Number" })
+                        <span class="help-block">
+                            @Html.ValidationMessageFor(m => m.Number, "", new { @class = "text-danger" })
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Capacity, new { @class = "form-control", placeholder = "Table Number" })
+                        <span class="help-block">
+                            @Html.ValidationMessageFor(m => m.Capacity, "", new { @class = "text-danger" })
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- / .row -->
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+}

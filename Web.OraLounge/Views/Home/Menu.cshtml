@@ -1,0 +1,165 @@
+﻿@model List<Web.OraLounge.Models.CategoryViewModel>
+@{
+    ViewData["Title"] = "Menu";
+}
+<section id="section_welcome"></section>
+<!-- CONTENT
+  ================================================== -->
+<!-- HEADER
+================================================== -->
+<section class="section section_header section_header__menu">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+
+                <!-- Heading -->
+                <h1 class="section__heading section_header__heading text-center">
+                    Menu
+                </h1>
+
+                <!-- Breadcrumbs -->
+                <ol class="breadcrumb">
+                    <li><a href="/">Home</a></li>
+                    <li class="active">Menu</li>
+                </ol>
+
+            </div>
+        </div> <!-- .row -->
+    </div> <!-- .container -->
+    <div class="section_header__bg menu_bg"></div>
+</section>
+
+<!-- section menu -->
+<section class="section_menu" id="section_menu">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="section_title">&#8722; Menu &#8722;</h2>
+                <hr class="section_title_line">
+                @*<p class="section_caption">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit mollitia, temporibus aliquid quae, repellendus eaque? Illo harum omnis sed debitis ratione dolor.</p>*@
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="nav nav-tabs menu_nav" id="mainCategory" style="margin-bottom: 20px!important;">
+                    @if (Model != null)
+                    {
+                        int i = 0;
+                        foreach (var item in Model)
+                        {
+                            <li role="presentation" class="@(i == 0 ? "active" : "")" data-id="@item.Id"><a href="#" role="tab">@item.Name</a></li>
+                            @*if (item.Children != null && item.Children.Count() > 0)
+                                {
+                                    <li role="presentation" class="@(i == 0 ? "active" : "")"><a href="#" id="main_@item.Id">@item.Name</a></li>
+                                }
+                                else
+                                {
+                                    <li role="presentation" class="@(i == 0 ? "active" : "")"><a href="#" id="main_@item.Id" role="tab" data-filter=".menu_@item.Id">@item.Name</a></li>
+                                }*@
+                            i++;
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+        <div id="div_subCategories"></div>
+        <div id="div_menuItems"></div>
+
+        @*<div class="row menu__grid">
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        if (item.Children != null && item.Children.Count() > 0)
+                        {
+                            foreach (var child in item.Children)
+                            {
+                                if (child.Products != null && child.Products.Count() > 0)
+                                {
+                                    foreach (var product in child.Products)
+                                    {
+                                        <div class="col-sm-4 menu__item menu_@child.Id">
+                                            <div class="menu__item_hover">
+                                                <img class="lazyload img-responsive" data-src="@product.Images.First()" min-height="300px" />
+
+                                                <div class="menu__item_overlay">
+                                                    <h3>@product.Name <span class="price">&#163;@product.Price</span></h3>
+                                                    <p class="overlay_info">@product.Description</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (item.Products != null && item.Products.Count() > 0)
+                            {
+                                foreach (var produt in item.Products)
+                                {
+                                    <div class="col-sm-4 menu__item menu_@item.Id">
+                                        <div class="menu__item_hover">
+                                            <img class="lazyload img-responsive" data-src="@produt.Images.First()" min-height="300px" />
+
+                                            <div class="menu__item_overlay">
+                                                <h3>@produt.Name <span class="price">&#163;@produt.Price</span></h3>
+                                                <p class="overlay_info">@produt.Description</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
+                    }
+                }
+            </div>*@
+    </div> <!-- .container -->
+</section>
+
+@section Scripts{
+    <script type="text/javascript">
+        //lazyload();
+        $(document).ready(function () {
+            $("#mainCategory li").on('click', function () {
+                var mainId = $(this).attr('data-id');
+                $("#mainCategory li").removeClass("active");
+                $(this).addClass('active');
+                $("#div_subCategories").load("@Url.Action("_SubCategories", "Home")", { 'parentId' : mainId },
+                    function (response, status, xhr) {
+                        if (response == "") {
+                            loadMenuItems(mainId);
+                        }
+                        $("#subCategories li:first-child").click();
+                    if (status == "error")
+                    {
+                        alert("An error occurred while loading the results.");
+                    }
+                });
+            });
+
+            $("#mainCategory li:first-child").click();
+        });
+        $(document).on('click', '#subCategories li', function () {
+            var subId = $(this).attr('data-id');
+            $("#subCategories li").removeClass("active");
+            $(this).addClass('active');
+            loadMenuItems(subId);
+        });
+        function loadMenuItems(categoryId) {
+            $("#div_menuItems").load("@Url.Action("_MenuItems", "Home")", { 'categoryId': categoryId },
+                                                function (response, status, xhr) {
+                    if (status == "error")
+                    {
+                        alert("An error occurred while loading the results.");
+                    }
+                });
+        }
+        //$("#mainCategory").on('click', function () {
+        //    $("div[id^=sub]").hide();
+        //    var mainId = $("#mainCategory li.active").attr('id');
+        //    var subId = mainId.replace('main', 'sub');
+        //    $('#' + subId).show();
+        //})
+    </script>
+}

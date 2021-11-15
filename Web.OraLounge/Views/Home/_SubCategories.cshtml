@@ -1,0 +1,15 @@
+﻿@model List<Web.OraLounge.Models.CategoryViewModel>
+
+@if (Model != null && Model.Count > 0)
+{
+    int i = 0;
+    <ul class="nav nav-tabs menu_nav" id="subCategories" style="margin-left: 30px!important; margin-bottom: 20px!important;">
+
+        @foreach (var item in Model)
+        {
+            <li role="presentation" class="@(i == 0 ? "active" : "")" data-id="@item.Id"><a href="#" style="font-size:larger">@item.Name</a></li>
+
+            i++;
+        }
+    </ul>
+}

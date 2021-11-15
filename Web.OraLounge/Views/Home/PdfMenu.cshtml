@@ -1,0 +1,93 @@
+﻿@model IReadOnlyList<Web.OraLounge.Models.CategoryViewModel>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="assets/favicon/favicon_Groggery.ico">
+
+    <title>Text Menu | Ora Lounge</title>
+
+    <!-- CSS Plugins -->
+    <link href="~/assets/plugins/lightbox/dist/css/lightbox.css" rel="stylesheet">
+    <link href="~/assets/plugins/ionicons/css/ionicons.min.css" rel="stylesheet" type="text/css">
+
+    <!-- CSS Global -->
+    <link href="~/assets/css/styles.css" rel="stylesheet">
+
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="70">
+    <!-- CONTENT
+    ================================================== -->
+    <!-- section menu -->
+    <section class="section_menu" id="section_menu">
+        <div class="container">
+            @*<div class="row">
+                    <div class="col-sm-12">
+                        <ul class="nav nav-tabs menu_nav">
+                            <li role="presentation" class="active"><a href="#" role="tab" data-filter=".menu-text_breakfast">Breakfast</a></li>
+                            <li role="presentation"><a href="#" role="tab" data-filter=".menu-text_lunch">Lunch</a></li>
+                            <li role="presentation"><a href="#" role="tab" data-filter=".menu-text_dinner">Dinner</a></li>
+                            <li role="presentation"><a href="#" role="tab" data-filter=".menu-text_drinks">Drinks</a></li>
+                            <li role="presentation"><a href="#" role="tab" data-filter=".menu-text_desserts">Desserts</a></li>
+                        </ul>
+                    </div>
+                </div>*@
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <div class="row">
+                        <div class="col-sm-12" style="text-align:center!important">
+                            <h1 style="color:#f1ae2b">@item.Name.ToUpper()</h1>
+                        </div>
+                    </div>
+                    if (item.Children != null && item.Children.Count() > 0)
+                    {
+                        foreach (var child in item.Children)
+                        {
+                            <div class="row">
+                                <div class="col-sm-12" style="text-align:center!important">
+                                    <h3>@child.Name.ToUpper()</h3>
+                                </div>
+                            </div>
+                            if (child.Products != null && child.Products.Count() > 0)
+                            {
+                                <div class="row menu__text-grid">
+                                    @foreach (var product in child.Products)
+                                    {
+
+                                        <div class="col-sm-6 menu__item menu-text_breakfast">
+                                            <h3>@product.Name <span class="price">&#163;@product.Price</span></h3>
+                                            <p class="dish_info">@product.Description</p>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        }
+                    }
+                }
+            }
+        </div> <!-- .container -->
+    </section>
+
+    <!-- JS
+    ================================================== -->
+    <!-- JS Global -->
+    <script src="~/assets/plugins/jquery/jquery-1.12.4.min.js"></script>
+    <script src="~/assets/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- JS Plugins -->
+    <script src="~/assets/plugins/lightbox/dist/js/lightbox.min.js"></script>
+    <script src="~/assets/plugins/isotope/isotope.pkgd.min.js"></script>
+    <script src="~/assets/plugins/imagesloaded/imagesloaded.pkgd.min.js"></script>
+
+    <!-- JS Custom -->
+    <script src="~/assets/js/custom.js"></script>
+</body>
+</html>

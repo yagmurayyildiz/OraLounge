@@ -1,0 +1,115 @@
+﻿@model IEnumerable<Web.OraLounge.Areas.Admin.Models.TableViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+
+    <!-- Area Chart -->
+    <div class="col-xl-12">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Table List</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#saveModal">
+                            Add New Table
+                        </button>
+                    </div>
+                </div>
+                <br />
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="table" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Actions</th>
+                                <th>Table Number</th>
+                                <th>Table Capacity</th>
+                                <th>Table Place</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Actions</th>
+                                <th>Table Number</th>
+                                <th>Table Capacity</th>
+                                <th>Table Place</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr data-item-id="@item.Id">
+                                    <td>
+                                        <a href="#" class="edit-row"><i class="fas fa-pencil-alt"></i> Update</a>
+                                        &emsp;
+                                        <a href="@Url.Action("DeleteTable", "Table", new { id = item.Id })" style="color:red"><i class="far fa-trash-alt"></i> Delete</a>
+                                    </td>
+                                    <td>@item.Number</td>
+                                    <td>@item.Capacity</td>
+                                    <td>@item.TablePlace</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="saveModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Save New Table</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @{Html.RenderPartial("_SaveTable", new Web.OraLounge.Areas.Admin.Models.TableViewModel()); }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="updateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Table</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="updateModalBody">
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        var table;
+        $(document).ready(function () {
+            table = $('#table').DataTable();
+        });
+        $('#table').on('click', '.edit-row', function () {
+            var $row = $(this).closest('tr'),
+                itemId = $row.attr('data-item-id');
+            var data = table.row($row).data();
+            $.ajax({
+                url: '/Admin/Table/_UpdateTable',
+                method: 'GET',
+                data: { id: itemId, name: data[1] },
+                success: function (result) {
+                    $(updateModalBody).html(result);
+                    $(updateModal).modal("show");
+                }
+            });
+        });
+    </script>
+}

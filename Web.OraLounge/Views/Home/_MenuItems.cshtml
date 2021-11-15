@@ -1,0 +1,20 @@
+﻿@model IEnumerable<Web.OraLounge.Models.ProductViewModel>
+@if (Model != null)
+{
+    <div class="row menu__grid">
+        @foreach (var item in Model)
+        {
+                <div class="col-sm-4 menu__item">
+                    <div class="menu__item_hover">
+                        <img class="img-responsive" src="@item.Image" />
+
+                        <div class="menu__item_overlay">
+                            <h3>@item.Name <span class="price">&#163;@item.Price</span></h3>
+                            <p class="overlay_info">@item.Description</p>
+                        </div>
+                    </div>
+                </div>
+        }
+    </div>
+
+}

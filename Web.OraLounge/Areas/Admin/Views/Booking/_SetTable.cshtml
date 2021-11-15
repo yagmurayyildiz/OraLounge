@@ -1,0 +1,68 @@
+﻿@model Web.OraLounge.Areas.Admin.Models.SetTableViewModel
+
+@using (Html.BeginForm("SetTable", "Booking", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "booking-form" }))
+{
+    <div class="modal-body" style="text-align:center">
+        <div class="row">
+            <div class="col-sm-12 ml-auto">
+                <div class="contacts_form__body">
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(x => x.Id)
+
+                    <div class="form-group">
+                        @Html.ListBoxFor(m => m.TableIds, new { @class = "form-control", placeholder = "Select Table" })
+                        <span class="help-block">
+                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", placeholder = "Surname" })
+                        <span class="help-block">
+                            @Html.ValidationMessageFor(m => m.Surname, "", new { @class = "text-danger" })
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email" })
+                        <span class="help-block">
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Phone" })
+                        <span class="help-block">
+                            @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+                        </span>
+                    </div><div class="form-group">
+                        @Html.TextBoxFor(m => m.Message, new { @class = "form-control", placeholder = "Additional Info" })
+                        <span class="help-block">
+                            @Html.ValidationMessageFor(m => m.Message, "", new { @class = "text-danger" })
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.PeopleCount, new { @class = "form-control", @placeHolder = "Count of People - Max 15", @required = "required", type = "number", min = "1", max = Web.OraLounge.Services.BookingConstants.MaxPeopleCount, id = "uPeopleCount", onChange = "FillUpdateTimes()" })
+                    </div>
+                    <div class="form-group">
+                        @Html.EnumDropDownListFor(x => x.BookingPlace, "Select Booking Place", new { @class = "form-control", @required = "required", id = "uBookingPlace", onChange = "FillUpdateTimes()" })
+                    </div>
+                    <div class="form-group">
+                        @Html.EditorFor(m => m.BookingTime.Date, "{0:dd/MM/yyyy}", new { @class = "form-control", @placeHolder = "Booking Date", @required = "required", @type = "date", id = "uBookingDate", onChange = "FillUpdateTimes()" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.SelectedHour, new List<SelectListItem>(), new { @class = "form-control", @placeHolder = "Booking Date", @required = "required", id = "uSelectedTime" })
+                    </div>
+                    <div class="form-group">
+                        @Html.EnumDropDownListFor(x => x.PaymentStatus, "Select Payment Status", new { @class = "form-control", @required = "required" })
+                    </div>
+                </div>
+            </div>
+        </div> <!-- / .row -->
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+}
+
+
+
